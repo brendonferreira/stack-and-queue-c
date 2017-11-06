@@ -21,7 +21,6 @@ void init_stack(struct node *head)
 */
 struct node *push_in_stack(struct node *head, char data)
 {
-    // printf("%c", data);
 
     struct node *tmp = (struct node *)malloc(sizeof(struct node));
     if (tmp == NULL)
