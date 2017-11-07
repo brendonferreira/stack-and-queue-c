@@ -36,8 +36,7 @@ void insere_fim_lista(Nodo *fila) {
 	novo->prox = NULL;
 	if(!fila){
 	    fila = novo;
-	}
-	else {
+	} else {
 	    aux = pegar_o_ultimo_no( fila );
 	    aux->prox = novo;
 	}
@@ -45,21 +44,25 @@ void insere_fim_lista(Nodo *fila) {
 
 void le_arquivo(Nodo *fila){
 	FILE *arq;
-	char string[6400];
+	char string[1280];
 	if((arq = fopen("arquivo.txt", "r")) == NULL){
     	printf("Erro ao abrir o arquivo.\n");
 	}
-	fgets(string, 6400, arq);
+	int i = 1;
+	fgets(string, 1280, arq);
 	fila->id = strtok(string,",");
-    printf("%s\n", fila->id);
+    printf("%d ---> %s\n", i, fila->id);
 	fila->prioridade = strtok(NULL,";");
-    printf("%c\n", *fila->prioridade);
+    printf("%d ---> %c\n", i, *fila->prioridade);
+    i++;
     while(fila->id != NULL && fila->prioridade != NULL){
         fila->id = strtok(NULL,",");
-        printf("%s\n", fila->id);
+        printf("%d ---> %s\n", i, fila->id);
 		fila->prioridade = strtok(NULL,";");
-        printf("%c\n", *fila->prioridade);
-    }
+        printf("%d ---> %c\n", i,*fila->prioridade);
+    	i++;
+	}
+    insere_fim_lista( fila );
 	fclose(arq);
 }
 
@@ -130,7 +133,7 @@ void imprime_fila(Nodo *queue_espera, Nodo *queue1, Nodo *queue2, Nodo *queue3 )
         	printf("prio: %s\n", queue3->prioridade);
 		}
     }
-} 
+}
 
 int main(){
     Nodo *queue_espera = inicializa_fila( &queue_espera );
@@ -139,7 +142,6 @@ int main(){
     Nodo *queue3 = inicializa_fila( &queue3 );
     le_arquivo(queue_espera);
 //    posiciona_em_filas( queue_espera, queue1, queue2, queue3 );
-//    imprime_fila( queue_espera, queue1, queue2, queue3 ); 
-    int menu;
+//	imprime_fila( queue_espera, queue1, queue2, queue3 ); 
     return 0;
 }
