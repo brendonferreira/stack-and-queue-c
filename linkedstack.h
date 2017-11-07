@@ -13,9 +13,15 @@ struct node
 };
 
 int is_stack_empty(struct node *s);
+
 struct node* push_in_stack(struct node *s,char data);
+
 struct node* pop_stack(struct node *s,char * data);
+
 void init_stack(struct node* s);
+
 void display_stack(struct node* head);
+
 char get_value(struct node* head);
+
 #endif // LINKEDSTACK_H_INCLUDED

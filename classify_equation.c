@@ -3,6 +3,7 @@
 #include<string.h>
 #include<stdbool.h>
 
+
 bool have_parentesis( char * string ){
   for(int i = 0; i <= strlen(string) ; i++){
     if( string[i] == '(' ) {

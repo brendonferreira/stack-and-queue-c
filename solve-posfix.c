@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include "linkedstack.h"
 
-char solve_expression(char value_a, char value_b, char operation)
-{
+char solve_expression(char value_a, char value_b, char operation) {
 
     int val1 = (int) value_a - '0'; //- '0';
 	int val2 = (int) value_b - '0'; //- '0';
@@ -21,12 +20,15 @@ char solve_expression(char value_a, char value_b, char operation)
     case '/':
         return (char) ( val2 / val1 ) + 48;
         break;
-    }
+	default:
+		return '0';
+		break;
+	}
+
     return '0';
 }
 
-int main()
-{
+int main() {
 	struct node *head = NULL;
 	char exp[20];
 	char n1, n2, n3;
