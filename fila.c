@@ -1,15 +1,21 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include<stdbool.h>
 
 typedef struct Node {
 	char *prioridade;
 	char *id;
-	struct Nodo *prox;
+	struct Node *prox;
 } Nodo;
 
 int inicializa_fila(Nodo **N) {
     *N = NULL;
+    return 0;
+}
+
+bool lista_vazia( Nodo ** N ) {
+    return *N == NULL;
 }
 
 Nodo * Cria_Nodo() {
@@ -28,66 +34,60 @@ Nodo * pegar_o_ultimo_no( Nodo *aux ) {
     return aux;
 }
 
-void insere_fim_lista(Nodo *fila) {
-	Nodo *novo, *aux;
-	novo = Cria_Nodo( );
-	novo->id = fila->prox;
-	novo->prioridade = fila->prox;
-	novo->prox = NULL;
-	if(!fila){
-	    fila = novo;
+void insere_fim_lista(Nodo **fila, Nodo *novo) {
+	Nodo *aux;
+	if(*fila == NULL){
+	    *fila = novo;
 	} else {
-	    aux = pegar_o_ultimo_no( fila );
+	    aux = pegar_o_ultimo_no( *fila );
 	    aux->prox = novo;
-	}
+    }
+    // imprime_fila( fila , "lasdk");
+    // printf( "\nlaskdlaksldkasdkl -> %s", pegar_o_ultimo_no( *fila )->id );
 }
 
-void le_arquivo(Nodo *fila){
-	FILE *arq;
+void le_arquivo(Nodo **fila){
+    FILE *arq;
+    Nodo * nodo;
+    
 	char string[1280];
-	if((arq = fopen("arquivo.txt", "r")) == NULL){
+    
+    if((arq = fopen("arquivo.txt", "r")) == NULL){
     	printf("Erro ao abrir o arquivo.\n");
 	}
-	int i = 1;
-	fgets(string, 1280, arq);
-	fila->id = strtok(string,",");
-    printf("%d ---> %s\n", i, fila->id);
-	fila->prioridade = strtok(NULL,";");
-    printf("%d ---> %c\n", i, *fila->prioridade);
-    i++;
-    while(fila->id != NULL && fila->prioridade != NULL){
-        fila->id = strtok(NULL,",");
-        printf("%d ---> %s\n", i, fila->id);
-		fila->prioridade = strtok(NULL,";");
-        printf("%d ---> %c\n", i,*fila->prioridade);
-    	i++;
-	}
-    insere_fim_lista( fila );
-	fclose(arq);
+    
+    fgets(string, 1280, arq);
+    
+    
+    nodo = Cria_Nodo();
+    nodo->id = strtok(string,",");
+    nodo->prioridade = strtok(NULL,";");
+
+    while( nodo->id != NULL && nodo->prioridade != NULL ){
+        insere_fim_lista( fila, nodo );
+        nodo = Cria_Nodo();
+        nodo->id = strtok(NULL,",");
+        nodo->prioridade = strtok(NULL,";");
+    }
+    fclose(arq);
 }
 
 void arruma_filas( Nodo *queue_origem, Nodo *queue_destino ){
-	Nodo *aux;
-	aux->id = queue_origem->id;
-	aux->prioridade = queue_origem->prioridade;
-	insere_fim_lista(queue_destino);
-	queue_destino->id = aux->id;
-	queue_destino->prioridade = aux->prioridade;
-	queue_origem = NULL;
-	aux = NULL;
 }
 
-void posiciona_em_filas( Nodo *queue_entrada, Nodo *queue1, Nodo *queue2, Nodo *queue3 ){
-	char um = "1";
-	char dois = "2";
-	char tres = "3";
-	le_arquivo( queue_entrada );
-	if( (strstr(um, queue_entrada->prioridade)) >= 0 ){
-		arruma_filas( queue_entrada, queue1);
+void posiciona_em_filas( Nodo *queue_entrada, Nodo **queue1, Nodo **queue2, Nodo **queue3 ){
+	char um[] = "1";
+	char dois[] = "2";
+	char tres[] = "3";
+    // le_arquivo( &queue_entrada );
+    
+
+	if( (strstr(um, pegar_o_ultimo_no( queue_entrada )->prioridade )) >= 0 ){
+		arruma_filas( queue_entrada, queue1 );
 	} else if( (strstr(dois, queue_entrada->prioridade)) >= 0 ){
-		arruma_filas( queue_entrada, queue2);
+		arruma_filas( queue_entrada, queue2 );
 	} else if( (strstr(tres, queue_entrada->prioridade)) >= 0 ){
-		arruma_filas( queue_entrada, queue3);
+		arruma_filas( queue_entrada, queue3 );
 	}
 }
 
@@ -107,40 +107,45 @@ int remove_inicio_lista(Nodo **N) {
     return 1;
 }
 
-void imprime_fila(Nodo *queue_espera, Nodo *queue1, Nodo *queue2, Nodo *queue3 ) {
+void imprime_fila( Nodo * file, char nome[] ) {
     Nodo *aux;
-    if(queue_espera == NULL)
+    if(file == NULL)
         printf("\n A fila esta vazia!!");
     else {
-        for(aux = queue_espera; aux != NULL; aux = aux->prox) { 
-            printf("Fila de Espera");
-			printf("id: %d\n", queue_espera->id);
-            printf("prio: %s\n", queue_espera->prioridade);
+        for(aux = file; aux != NULL; aux = aux->prox) { 
+            printf("Fila de %s", nome);
+			printf("id: %s\n", aux->id);
+            printf("prio: %s\n", aux->prioridade);
         }
-        for( aux = queue1; aux != NULL; aux = aux->prox ){
-        	printf("Fila 1");
-        	printf("id: %d\n", queue1->id);
-        	printf("prio: %s\n", queue1->prioridade);
-		}
-		for( aux = queue2; aux != NULL; aux = aux->prox ){
-        	printf("Fila 2");
-        	printf("id: %d\n", queue2->id);
-        	printf("prio: %s\n", queue2->prioridade);
-		}
-		for( aux = queue3; aux != NULL; aux = aux->prox ){
-        	printf("Fila 3");
-        	printf("id: %d\n", queue3->id);
-        	printf("prio: %s\n", queue3->prioridade);
-		}
     }
 }
 
+void imprime_filas(Nodo *queue_espera, Nodo *queue1, Nodo *queue2, Nodo *queue3 ) {
+    imprime_fila( queue_espera, "Espera");
+    imprime_fila( queue1, "1");
+    imprime_fila( queue2, "2");
+    imprime_fila( queue3, "3");
+}
+
+void 
+
 int main(){
-    Nodo *queue_espera = inicializa_fila( &queue_espera );
-    Nodo *queue1 = inicializa_fila( &queue1 );
-    Nodo *queue2 = inicializa_fila( &queue2 );
-    Nodo *queue3 = inicializa_fila( &queue3 );
-    le_arquivo(queue_espera);
+    Nodo *queue_espera = NULL, *queue1 = NULL, *queue2 = NULL, *queue3 = NULL; 
+    
+    inicializa_fila( &queue1 );
+    inicializa_fila( &queue2 );
+    inicializa_fila( &queue3 );
+    inicializa_fila( &queue_espera );
+    
+    le_arquivo(&queue_espera);
+
+    imprime_filas( queue_espera, queue1, queue2, queue3 );
+    // char string[] = "teste - 123 - oakdasdk";
+    // char * s ;
+    // s = strtok( string, " - " );
+    // printf( "%s\n", s);
+    // s = strtok( NULL, " - " );
+    // printf( "%s\n", s);
 //    posiciona_em_filas( queue_espera, queue1, queue2, queue3 );
 //	imprime_fila( queue_espera, queue1, queue2, queue3 ); 
     return 0;
