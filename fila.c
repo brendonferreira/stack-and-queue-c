@@ -52,20 +52,23 @@ void le_arquivo(Nodo *fila){
 	fila->id = strtok(string,"*,*");
     fila->prioridade = strtok(NULL,"*;*");
         while (fila->id != NULL && fila->prioridade != NULL){
-                printf("The id is:  %s\n", fila->id);
                 fila->id = strtok(NULL," ,");
-                printf("The prio is:  %s\n", fila->prioridade);
+                printf("%s", fila->id);
                 fila->prioridade = strtok(NULL," ;");
+                printf("%d", fila->prioridade);
         }
 	fclose(arq);
 }
 
-
 void arruma_filas( Nodo *queue_origem, Nodo *queue_destino ){
 	Nodo *aux;
-	aux = queue_origem;
-	queue_destino = aux;
+	aux->id = queue_origem->id;
+	aux->prioridade = queue_origem->prioridade;
+//	insere_fim_lista(queue_destino);
+//	queue_destino->id = aux->id;
+//	queue_destino->prioridade = aux->prioridade;
 	queue_origem = NULL;
+	aux = NULL;
 }
 
 void posiciona_em_filas( Nodo *queue_entrada, Nodo *queue1, Nodo *queue2, Nodo *queue3 ){
@@ -126,18 +129,14 @@ void imprime_fila(Nodo *queue_espera, Nodo *queue1, Nodo *queue2, Nodo *queue3 )
     }
 } 
 
-//void tarefa( Nodo *Fila ){
-//	
-//	delay(500);
-//	tarefa( Fila );
-//}
-
 int main(){
     Nodo *queue_espera = inicializa_fila( &queue_espera );
     Nodo *queue1 = inicializa_fila( &queue1 );
     Nodo *queue2 = inicializa_fila( &queue2 );
     Nodo *queue3 = inicializa_fila( &queue3 );
-    
+    le_arquivo(queue_espera);
+    posiciona_em_filas( queue_espera, queue1, queue2, queue3 );
+    imprime_fila( queue_espera, queue1, queue2, queue3 ); 
     int menu;
     return 0;
 }
