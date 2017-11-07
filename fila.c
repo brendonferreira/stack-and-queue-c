@@ -75,35 +75,35 @@ void le_arquivo(Nodo **fila){
 void arruma_filas( Nodo *queue_origem, Nodo *queue_destino ){
 }
 
-void posiciona_em_filas( Nodo *queue_entrada, Nodo **queue1, Nodo **queue2, Nodo **queue3 ){
+void distribuir_para_filas( Nodo **queue_entrada, Nodo **queue1, Nodo **queue2, Nodo **queue3 ){
 	char um[] = "1";
 	char dois[] = "2";
 	char tres[] = "3";
     // le_arquivo( &queue_entrada );
     
-    Nodo * ultimo_fila = pegar_o_ultimo_no( queue_entrada );
+    Nodo * ultimo_fila;
+    
+    remove_final_lista( queue_entrada, ultimo_fila );
 
     if ( *ultimo_fila != NULL ) {
         switch( *( ultimo_fila->prioridade ) ) {
             case '1': 
-                insere_fim_lista( queue1, ultimo_fila );
+                insere_fim_lista( queue1, ultimo_fila ); break;
             case '2': 
-                insere_fim_lista( queue1, ultimo_fila );
+                insere_fim_lista( queue2, ultimo_fila ); break;
             case '3': 
-                insere_fim_lista( queue1, ultimo_fila );
-             
-            insere_fim_lista( queue1, ultimo_fila );
+                insere_fim_lista( queue3, ultimo_fila ); break;
+            default: 
+                insere_fim_lista( queue_entrada, ultimo_fila ); break;
              
         }
     } 
 
-	if( (strstr(um, pegar_o_ultimo_no( queue_entrada )->prioridade )) >= 0 ){
-		arruma_filas( queue_entrada, queue1 );
-	} else if( (strstr(dois, queue_entrada->prioridade)) >= 0 ){
-		arruma_filas( queue_entrada, queue2 );
-	} else if( (strstr(tres, queue_entrada->prioridade)) >= 0 ){
-		arruma_filas( queue_entrada, queue3 );
-	}
+    imprime_filas( *queue_espera, *queue1, *queue2, *queue3 );
+
+    delay( 500 );
+
+    distribuir_para_filas( queue_entrada, queue1, queue2, queue3 );
 }
 
 int remove_inicio_lista(Nodo **N) {
@@ -154,7 +154,10 @@ int main(){
     
     le_arquivo(&queue_espera);
 
-    imprime_filas( queue_espera, queue1, queue2, queue3 );
+    distribuir_para_filas( &queue_espera, &queue1, &queue2, &queue3 );
+
+    
+    
     // char string[] = "teste - 123 - oakdasdk";
     // char * s ;
     // s = strtok( string, " - " );
