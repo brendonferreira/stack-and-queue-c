@@ -2,6 +2,7 @@
 #include<stdlib.h>
 #include<string.h>
 #include<stdbool.h>
+#include<time.h>
 
 typedef struct Node {
 	char *prioridade;
@@ -72,56 +73,63 @@ void le_arquivo(Nodo **fila){
     fclose(arq);
 }
 
-void arruma_filas( Nodo *queue_origem, Nodo *queue_destino ){
-}
 
-void distribuir_para_filas( Nodo **queue_entrada, Nodo **queue1, Nodo **queue2, Nodo **queue3 ){
-	char um[] = "1";
-	char dois[] = "2";
-	char tres[] = "3";
-    // le_arquivo( &queue_entrada );
-    
-    Nodo * ultimo_fila;
-    
-    remove_final_lista( queue_entrada, ultimo_fila );
-
-    if ( *ultimo_fila != NULL ) {
-        switch( *( ultimo_fila->prioridade ) ) {
-            case '1': 
-                insere_fim_lista( queue1, ultimo_fila ); break;
-            case '2': 
-                insere_fim_lista( queue2, ultimo_fila ); break;
-            case '3': 
-                insere_fim_lista( queue3, ultimo_fila ); break;
-            default: 
-                insere_fim_lista( queue_entrada, ultimo_fila ); break;
-             
+void imprime_fila( Nodo * file, char nome[] ) {
+    Nodo *aux;
+    if(file == NULL) {}
+        // printf("A fila esta vazia!!");
+    else {
+        int i = 0;
+        printf("Fila de %s");
+        for(aux = file; aux != NULL; aux = aux->prox) { 
+            printf("\n%d - id: %s, prio: %s\n", i, nome, aux->id, aux->prioridade);
+            i++;
         }
-    } 
-
-    imprime_filas( *queue_espera, *queue1, *queue2, *queue3 );
-
-    delay( 500 );
-
-    distribuir_para_filas( queue_entrada, queue1, queue2, queue3 );
+    }
 }
 
-int remove_final_lista(Nodo **N, char *dado[80]) {
-    Nodo *aux, *anterior;
+void imprime_filas(Nodo *queue_espera, Nodo *queue1, Nodo *queue2, Nodo *queue3 ) {
+    imprime_fila( queue_espera, "Espera");
+    imprime_fila( queue1, "1");
+    imprime_fila( queue2, "2");
+    imprime_fila( queue3, "3");
+}
+
+// int remove_final_lista(Nodo **N) {
+//     Nodo *aux, *anterior;
+//     if(*N == NULL)
+//         return 0;
+//     else {
+
+//         aux = *N;
+//         while(aux->prox != NULL) {
+//             anterior = aux;
+//             aux = aux->prox;
+//         }
+        
+//         // retorno = aux;
+//         free( aux );
+//         anterior->prox = NULL;
+//     }
+//     return 1;
+// }
+
+int remove_final_lista(Nodo **N) {
+    Nodo *temp, *t;
+
     if(*N == NULL)
         return 0;
     else {
 
-        aux = *N;
-        while(aux->prox != NULL) {
-            anterior = aux;
-            aux = aux->prox;
+        temp = *N;
+        while(temp->prox != NULL) {
+            t = temp;
+            temp = temp->prox;
         }
         
-        *dado = aux->compromisso.descricao;
-        free(aux);
-        anterior->prox = NULL;
-
+        // retorno = aux;
+        free( t->prox );
+        t->prox = NULL;
     }
     return 1;
 }
@@ -142,27 +150,48 @@ int remove_inicio_lista(Nodo **N) {
     return 1;
 }
 
-void imprime_fila( Nodo * file, char nome[] ) {
-    Nodo *aux;
-    if(file == NULL)
-        printf("\n A fila esta vazia!!");
-    else {
-        for(aux = file; aux != NULL; aux = aux->prox) { 
-            printf("Fila de %s", nome);
-			printf("id: %s\n", aux->id);
-            printf("prio: %s\n", aux->prioridade);
+
+void distribuir_para_filas( Nodo **queue_entrada, Nodo **queue1, Nodo **queue2, Nodo **queue3 ){
+	// char um[] = "1";
+	// char dois[] = "2";
+	// char tres[] = "3";
+    // le_arquivo( &queue_entrada );
+    
+    Nodo * cpy_ultimo_fila = Cria_Nodo();
+    Nodo * ultimo_fila = pegar_o_ultimo_no( *queue_entrada );
+    cpy_ultimo_fila->id = ultimo_fila->id;
+    cpy_ultimo_fila->prioridade = ultimo_fila->prioridade;
+    remove_final_lista( queue_entrada );
+
+    if ( cpy_ultimo_fila != NULL && cpy_ultimo_fila->id && cpy_ultimo_fila->prioridade ) {
+        switch( *( cpy_ultimo_fila->prioridade ) ) {
+            case '1': 
+                insere_fim_lista( queue1, cpy_ultimo_fila ); break;
+            case '2': 
+                insere_fim_lista( queue2, cpy_ultimo_fila ); break;
+            case '3': 
+                insere_fim_lista( queue3, cpy_ultimo_fila ); break;
+            default: 
+                insere_fim_lista( queue_entrada, cpy_ultimo_fila ); break;
+             
         }
+    } else {
+        printf("CABO SSSA PORRA");
     }
+
+    imprime_fila( *queue_entrada , "sdasd");
+    // imprime_filas( *queue_entrada, *queue1, *queue2, *queue3 );
+
+    
+    // delay( 500 );
+
+    usleep( 500 * 1000 );
+
+
+    distribuir_para_filas( queue_entrada, queue1, queue2, queue3 );
 }
 
-void imprime_filas(Nodo *queue_espera, Nodo *queue1, Nodo *queue2, Nodo *queue3 ) {
-    imprime_fila( queue_espera, "Espera");
-    imprime_fila( queue1, "1");
-    imprime_fila( queue2, "2");
-    imprime_fila( queue3, "3");
-}
 
-void 
 
 int main(){
     Nodo *queue_espera = NULL, *queue1 = NULL, *queue2 = NULL, *queue3 = NULL; 
