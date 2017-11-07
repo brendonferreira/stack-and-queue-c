@@ -81,6 +81,21 @@ void posiciona_em_filas( Nodo *queue_entrada, Nodo **queue1, Nodo **queue2, Nodo
 	char tres[] = "3";
     // le_arquivo( &queue_entrada );
     
+    Nodo * ultimo_fila = pegar_o_ultimo_no( queue_entrada );
+
+    if ( *ultimo_fila != NULL ) {
+        switch( *( ultimo_fila->prioridade ) ) {
+            case '1': 
+                insere_fim_lista( queue1, ultimo_fila );
+            case '2': 
+                insere_fim_lista( queue1, ultimo_fila );
+            case '3': 
+                insere_fim_lista( queue1, ultimo_fila );
+             
+            insere_fim_lista( queue1, ultimo_fila );
+             
+        }
+    } 
 
 	if( (strstr(um, pegar_o_ultimo_no( queue_entrada )->prioridade )) >= 0 ){
 		arruma_filas( queue_entrada, queue1 );
