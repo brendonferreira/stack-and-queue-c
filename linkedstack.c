@@ -1,8 +1,3 @@
-/*
-* File: stack.c
-* Author:  zentut.com
-* Purpose: linked stack implementation
-*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,16 +6,14 @@
 /*
     init the stack
 */
-void init_stack(struct node *head)
-{
+void init_stack(struct node *head) {
     head = NULL;
 }
 
 /*
     push an element into stack
 */
-struct node *push_in_stack(struct node *head, char data)
-{
+struct node *push_in_stack(struct node *head, char data) {
 
     struct node *tmp = (struct node *)malloc(sizeof(struct node));
     if (tmp == NULL)
@@ -35,8 +28,7 @@ struct node *push_in_stack(struct node *head, char data)
 /*
     pop an element from the stack
 */
-struct node *pop_stack(struct node *head, char *element)
-{
+struct node *pop_stack(struct node *head, char *element) {
     struct node *tmp = head;
     *element = head->data;
     head = head->next;
@@ -44,30 +36,31 @@ struct node *pop_stack(struct node *head, char *element)
     return head;
 }
 
-
-int is_stack_empty(struct node *head){
+int is_stack_empty(struct node *head) {
     return head == NULL ? 1 : 0;
 }
 
 /*
     display the stack content
 */
-void display_stack(struct node *head)
-{
+void display_stack(struct node *head) {
     struct node *current;
     current = head;
-    if (current != NULL) {
-        do {
+    if (current != NULL)
+    {
+        do
+        {
             printf("%c ", current->data);
             current = current->next;
         } while (current != NULL);
         printf("\n");
-    } else {
+    }
+    else
+    {
         printf("essa porra ta vazia\n");
     }
 }
 
-
-char get_value( struct node *head ) {
+char get_value(struct node *head) {
     return head->data;
 }

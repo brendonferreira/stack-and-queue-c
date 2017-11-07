@@ -3,6 +3,8 @@
         "linkedstack.h": "c",
         "string.h": "c",
         "ctype.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "stdbool.h": "c",
+        "stdio.h": "c"
     }
 }

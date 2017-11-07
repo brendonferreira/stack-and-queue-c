@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "linkedstack.h"
+#include <string.h>
 
 int main() {
     struct node* head = NULL;
@@ -21,6 +22,8 @@ int main() {
         head = pop_stack(head,&element);
         display_stack(head);
     }
+
+    is_stack_empty( head );
 
     return 0;
 }

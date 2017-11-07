@@ -38,8 +38,7 @@ int main(){
 
     init_stack(head);
 
-    for (i = 0, k = -1; exp[i] ; ++i)
-    {
+    for (i = 0, k = -1; exp[i] ; ++i) {
         // Debug mto loco
         // printf( "\n--->%c<--\n", exp[i] );
         if( exp[i] == ' ' ) {
