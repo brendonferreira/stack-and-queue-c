@@ -106,6 +106,26 @@ void distribuir_para_filas( Nodo **queue_entrada, Nodo **queue1, Nodo **queue2, 
     distribuir_para_filas( queue_entrada, queue1, queue2, queue3 );
 }
 
+int remove_final_lista(Nodo **N, char *dado[80]) {
+    Nodo *aux, *anterior;
+    if(*N == NULL)
+        return 0;
+    else {
+
+        aux = *N;
+        while(aux->prox != NULL) {
+            anterior = aux;
+            aux = aux->prox;
+        }
+        
+        *dado = aux->compromisso.descricao;
+        free(aux);
+        anterior->prox = NULL;
+
+    }
+    return 1;
+}
+
 int remove_inicio_lista(Nodo **N) {
     Nodo *aux, *anterior;
     if(*N == NULL)
