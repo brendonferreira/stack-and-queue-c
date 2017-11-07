@@ -2,17 +2,13 @@
 #include<stdlib.h>
 #include<string.h>
 
-typedef struct Bloco {
-    struct Bloco *prox;
-} Nodo;
-
-typedef struct FILA {
+typedef struct Node {
 	int prioridade;
 	char *id;
-	Nodo bloco; 
-} Fila;
+	struct Nodo *prox;
+} Nodo;
 
-void inicializa_fila(Nodo **N) {
+int inicializa_fila(Nodo **N) {
     *N = NULL;
 }
 
@@ -26,64 +22,67 @@ Nodo * Cria_Nodo() {
     return p;
 }
 
-Nodo * pegar_o_ultimo_no( Nodo * aux ) {
+Nodo * pegar_o_ultimo_no( Nodo *aux ) {
     while(aux->prox != NULL)
         aux = aux->prox;
     return aux;
 }
 
-void insere_fila(Nodo **N) {
-	Fila fila;
-	Nodo *novo, * aux;
+void insere_fim_lista(Nodo *fila) {
+	Nodo *novo, *aux;
 	novo = Cria_Nodo( );
-	novo->fila = fila;
+	novo->id = fila->prox;
+	novo->prioridade = fila->prox;
 	novo->prox = NULL;
-	if(*N == NULL)
-	    *N = novo;
+	if(!fila){
+	    fila = novo;
+	}
 	else {
-	    aux = pegar_o_ultimo_no( *N );
+	    aux = pegar_o_ultimo_no( fila );
 	    aux->prox = novo;
 	}
 }
 
-void le_arquivo_e_insere(Nodo **N){
-	Fila fila;
+void le_arquivo(Nodo *fila){
 	FILE *arq;
+	char string[6400];
 	if((arq = fopen("arquivo.txt", "r")) == NULL){
     	printf("Erro ao abrir o arquivo.\n");
-	}
-	fseek(arq,0,SEEK_SET);
-	char string[6400] = fread(string, 6400,1, arq);
-	fila.id = strtok(string,"*,*");
-    fila.prioridade = strtok(NULL,"*;*");
-        while (fila.id != NULL && fila.prioridade != NULL){
-                printf("The id is:  %s\n", fila.id);
-                fila.id = strtok(NULL," ,");
-                printf("The prio is:  %s\n", fila.prioridade);
-                fila.prioridade = strtok(NULL," ;");
+	}fgets(string, 6400, arq);
+	fila->id = strtok(string,"*,*");
+    fila->prioridade = strtok(NULL,"*;*");
+        while (fila->id != NULL && fila->prioridade != NULL){
+                printf("The id is:  %s\n", fila->id);
+                fila->id = strtok(NULL," ,");
+                printf("The prio is:  %s\n", fila->prioridade);
+                fila->prioridade = strtok(NULL," ;");
         }
 	fclose(arq);
 }
 
-void posiciona_em_filas( Nodo **N ){
-	Fila fila;
+
+void arruma_filas( Nodo *queue_origem, Nodo *queue_destino ){
+	Nodo *aux;
+	aux = queue_origem;
+	queue_destino = aux;
+	queue_origem = NULL;
+}
+
+void posiciona_em_filas( Nodo *queue_entrada, Nodo *queue1, Nodo *queue2, Nodo *queue3 ){
 	char um = "1";
 	char dois = "2";
 	char tres = "3";
-	le_arquivo_e_insere( N );
-	if( strstr(um, fila.prioridade) ){
-		insere_fila( N );
-		remove_fila( N );
-	} else if( strstr(dois, fila.prioridade)){
-		insere_fila( N );
-		remove_fila( N );
-	} else if( strstr(tres, fila.prioridade)){
-		insere_fila( N );
-		remove_fila( N );
+	le_arquivo( queue_entrada );
+	if( (strstr(um, queue_entrada->prioridade)) >= 0 ){
+		arruma_filas( queue_entrada, queue1);
+	} else if( (strstr(dois, queue_entrada->prioridade)) >= 0 ){
+		arruma_filas( queue_entrada, queue2);
+	} else if( (strstr(tres, queue_entrada->prioridade)) >= 0 ){
+		arruma_filas( queue_entrada, queue3);
 	}
 }
 
-int remove_fila(Nodo **N) {
+int remove_inicio_lista(Nodo **N) {
     Nodo *aux, *anterior;
     if(*N == NULL)
         return 0;
@@ -99,58 +98,46 @@ int remove_fila(Nodo **N) {
     return 1;
 }
 
-void imprime_fila(Nodo *N) {
+void imprime_fila(Nodo *queue_espera, Nodo *queue1, Nodo *queue2, Nodo *queue3 ) {
     Nodo *aux;
-    Fila fila;
-    if(N == NULL)
-        printf("\n A lista esta vazia!!");
+    if(queue_espera == NULL)
+        printf("\n A fila esta vazia!!");
     else {
-        for(aux = N; aux != NULL; aux = aux->prox) { 
-            printf("id: %d\n", fila.id);
-            printf("prio: %s\n", fila.prioridade);
+        for(aux = queue_espera; aux != NULL; aux = aux->prox) { 
+            printf("Fila de Espera");
+			printf("id: %d\n", queue_espera->id);
+            printf("prio: %s\n", queue_espera->prioridade);
         }
+        for( aux = queue1; aux != NULL; aux = aux->prox ){
+        	printf("Fila 1");
+        	printf("id: %d\n", queue1->id);
+        	printf("prio: %s\n", queue1->prioridade);
+		}
+		for( aux = queue2; aux != NULL; aux = aux->prox ){
+        	printf("Fila 2");
+        	printf("id: %d\n", queue2->id);
+        	printf("prio: %s\n", queue2->prioridade);
+		}
+		for( aux = queue3; aux != NULL; aux = aux->prox ){
+        	printf("Fila 3");
+        	printf("id: %d\n", queue3->id);
+        	printf("prio: %s\n", queue3->prioridade);
+		}
     }
 } 
 
+//void tarefa( Nodo *Fila ){
+//	
+//	delay(500);
+//	tarefa( Fila );
+//}
+
 int main(){
-    Nodo *QueueZero = NULL;
-    Nodo *QueueOne = NULL;
-    Nodo *QueueTwo = NULL;
-    Nodo *QueueThree = NULL;
+    Nodo *queue_espera = inicializa_fila( &queue_espera );
+    Nodo *queue1 = inicializa_fila( &queue1 );
+    Nodo *queue2 = inicializa_fila( &queue2 );
+    Nodo *queue3 = inicializa_fila( &queue3 );
+    
     int menu;
-	inicializa_fila(&QueueZero);
-	le_arquivo_e_insere(&QueueZero);
-    imprime_fila(&QueueZero);
-	    do {
-	        printf("\n1. Inserir novas requisicoes\n");
-	        printf("\n2. Mostrar fila principal\n");
-	        printf("\n3. Mostrar fila 1\n");
-	        printf("\n4. Mostrar fila 2\n");
-	        printf("\n5. Mostrar fila 3\n");
-	        printf("\n6. Sair\n");
-			scanf("%d", &menu);
-	        switch(menu) {
-	            case 1:
-	            	//função para inserir
-	                break;
-	            case 2:
-	            	//printa fila 0
-					break;
-	            case 3: 
-	                //printa fila 1
-	                break;
-	            case 4: 
-	            	//printa fila 2
-	                break;
-	            case 5: 
-	                //print fila 3
-	                break;
-	            case 6: 
-	                printf("\n\n\nSaindo do programa!");
-	                break;
-	            default:
-	                printf("\nOpcao Invalida!!!");
-	        }
-	    } while(menu != 6);
     return 0;
 }
