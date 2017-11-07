@@ -3,7 +3,7 @@
 #include<string.h>
 
 typedef struct Node {
-	int prioridade;
+	char *prioridade;
 	char *id;
 	struct Nodo *prox;
 } Nodo;
@@ -48,15 +48,18 @@ void le_arquivo(Nodo *fila){
 	char string[6400];
 	if((arq = fopen("arquivo.txt", "r")) == NULL){
     	printf("Erro ao abrir o arquivo.\n");
-	}fgets(string, 6400, arq);
-	fila->id = strtok(string,"*,*");
-    fila->prioridade = strtok(NULL,"*;*");
-        while (fila->id != NULL && fila->prioridade != NULL){
-                fila->id = strtok(NULL," ,");
-                printf("%s", fila->id);
-                fila->prioridade = strtok(NULL," ;");
-                printf("%d", fila->prioridade);
-        }
+	}
+	fgets(string, 6400, arq);
+	fila->id = strtok(string,",");
+    printf("%s\n", fila->id);
+	fila->prioridade = strtok(NULL,";");
+    printf("%c\n", *fila->prioridade);
+    while(fila->id != NULL && fila->prioridade != NULL){
+        fila->id = strtok(NULL,",");
+        printf("%s\n", fila->id);
+		fila->prioridade = strtok(NULL,";");
+        printf("%c\n", *fila->prioridade);
+    }
 	fclose(arq);
 }
 
@@ -64,9 +67,9 @@ void arruma_filas( Nodo *queue_origem, Nodo *queue_destino ){
 	Nodo *aux;
 	aux->id = queue_origem->id;
 	aux->prioridade = queue_origem->prioridade;
-//	insere_fim_lista(queue_destino);
-//	queue_destino->id = aux->id;
-//	queue_destino->prioridade = aux->prioridade;
+	insere_fim_lista(queue_destino);
+	queue_destino->id = aux->id;
+	queue_destino->prioridade = aux->prioridade;
 	queue_origem = NULL;
 	aux = NULL;
 }
@@ -135,8 +138,8 @@ int main(){
     Nodo *queue2 = inicializa_fila( &queue2 );
     Nodo *queue3 = inicializa_fila( &queue3 );
     le_arquivo(queue_espera);
-    posiciona_em_filas( queue_espera, queue1, queue2, queue3 );
-    imprime_fila( queue_espera, queue1, queue2, queue3 ); 
+//    posiciona_em_filas( queue_espera, queue1, queue2, queue3 );
+//    imprime_fila( queue_espera, queue1, queue2, queue3 ); 
     int menu;
     return 0;
 }
