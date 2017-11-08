@@ -30,9 +30,22 @@ Nodo * Cria_Nodo() {
 }
 
 Nodo * pegar_o_ultimo_no( Nodo *aux ) {
-    while(aux->prox != NULL)
-        aux = aux->prox;
+	while(aux->prox != NULL)
+		aux = aux->prox;
     return aux;
+}
+
+void imprime_fila( Nodo * fila ) {
+    Nodo *aux;
+    if(lista_vazia( &fila )) {
+        printf("A fila esta vazia!!");
+    } else {
+        int i = 0;
+        for(aux = fila; aux != NULL; aux = aux->prox) { 
+            printf("\n%d - id: %s, prio: %s\n", i, aux->id, aux->prioridade);
+            i++;
+        }
+    }
 }
 
 void insere_fim_lista(Nodo **fila, Nodo *novo) {
@@ -43,9 +56,16 @@ void insere_fim_lista(Nodo **fila, Nodo *novo) {
 	    aux = pegar_o_ultimo_no( *fila );
 	    aux->prox = novo;
     }
-    // imprime_fila( fila , "lasdk");
-    // printf( "\nlaskdlaksldkasdkl -> %s", pegar_o_ultimo_no( *fila )->id );
+     imprime_fila( fila );
 }
+
+void imprime_filas(Nodo *queue_espera, Nodo *queue1, Nodo *queue2, Nodo *queue3 ) {
+    imprime_fila( queue_espera);
+    imprime_fila( queue1 );
+    imprime_fila( queue2 );
+    imprime_fila( queue3 );
+}
+
 
 void le_arquivo(Nodo **fila){
     FILE *arq;
@@ -63,7 +83,10 @@ void le_arquivo(Nodo **fila){
     nodo = Cria_Nodo();
     nodo->id = strtok(string,",");
     nodo->prioridade = strtok(NULL,";");
-
+	insere_fim_lista( fila, nodo );
+	
+	imprime_fila( fila );
+    
     while( nodo->id != NULL && nodo->prioridade != NULL ){
         insere_fim_lista( fila, nodo );
         nodo = Cria_Nodo();
@@ -72,47 +95,6 @@ void le_arquivo(Nodo **fila){
     }
     fclose(arq);
 }
-
-
-void imprime_fila( Nodo * file, char nome[] ) {
-    Nodo *aux;
-    if(file == NULL) {}
-        // printf("A fila esta vazia!!");
-    else {
-        int i = 0;
-        printf("Fila de %s");
-        for(aux = file; aux != NULL; aux = aux->prox) { 
-            printf("\n%d - id: %s, prio: %s\n", i, nome, aux->id, aux->prioridade);
-            i++;
-        }
-    }
-}
-
-void imprime_filas(Nodo *queue_espera, Nodo *queue1, Nodo *queue2, Nodo *queue3 ) {
-    imprime_fila( queue_espera, "Espera");
-    imprime_fila( queue1, "1");
-    imprime_fila( queue2, "2");
-    imprime_fila( queue3, "3");
-}
-
-// int remove_final_lista(Nodo **N) {
-//     Nodo *aux, *anterior;
-//     if(*N == NULL)
-//         return 0;
-//     else {
-
-//         aux = *N;
-//         while(aux->prox != NULL) {
-//             anterior = aux;
-//             aux = aux->prox;
-//         }
-        
-//         // retorno = aux;
-//         free( aux );
-//         anterior->prox = NULL;
-//     }
-//     return 1;
-// }
 
 int remove_final_lista(Nodo **N) {
     Nodo *temp, *t;
@@ -150,13 +132,7 @@ int remove_inicio_lista(Nodo **N) {
     return 1;
 }
 
-
 void distribuir_para_filas( Nodo **queue_entrada, Nodo **queue1, Nodo **queue2, Nodo **queue3 ){
-	// char um[] = "1";
-	// char dois[] = "2";
-	// char tres[] = "3";
-    // le_arquivo( &queue_entrada );
-    
     Nodo * cpy_ultimo_fila = Cria_Nodo();
     Nodo * ultimo_fila = pegar_o_ultimo_no( *queue_entrada );
     cpy_ultimo_fila->id = ultimo_fila->id;
@@ -176,11 +152,11 @@ void distribuir_para_filas( Nodo **queue_entrada, Nodo **queue1, Nodo **queue2, 
              
         }
     } else {
-        printf("CABO SSSA PORRA");
+        printf("CABO");
     }
 
-    imprime_fila( *queue_entrada , "sdasd");
-    // imprime_filas( *queue_entrada, *queue1, *queue2, *queue3 );
+    // imprime_fila( *queue_entrada );
+    imprime_filas( *queue_entrada, *queue1, *queue2, *queue3 );
 
     
     // delay( 500 );
@@ -205,15 +181,6 @@ int main(){
 
     distribuir_para_filas( &queue_espera, &queue1, &queue2, &queue3 );
 
-    
-    
-    // char string[] = "teste - 123 - oakdasdk";
-    // char * s ;
-    // s = strtok( string, " - " );
-    // printf( "%s\n", s);
-    // s = strtok( NULL, " - " );
-    // printf( "%s\n", s);
-//    posiciona_em_filas( queue_espera, queue1, queue2, queue3 );
-//	imprime_fila( queue_espera, queue1, queue2, queue3 ); 
+	imprime_filas( queue_espera, queue1, queue2, queue3 ); 
     return 0;
 }

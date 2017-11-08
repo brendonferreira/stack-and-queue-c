@@ -5,7 +5,8 @@
 
 
 bool have_parentesis( char * string ){
-  for(int i = 0; i <= strlen(string) ; i++){
+  int i;
+  for( i = 0; i <= strlen(string) ; i++){
     if( string[i] == '(' ) {
       return true;
     }
@@ -19,7 +20,7 @@ char * subString(char *string, int position, int length) {
  
    pointer = malloc(length+1);
    if (pointer == NULL){
-      printf("Não foi possivel alocar a memoria necessaria.\n");
+      printf("Nao foi possivel alocar a memoria necessaria.\n");
       exit(1);
    }
    for (c = 0 ; c < length ; c++){
@@ -33,7 +34,8 @@ char * subString(char *string, int position, int length) {
 char * separate_parent_parentesis( char * equation ){
   int open_parentesis_position = -1 ;
   int closures_counter = 0;
-  for( int count = 0; count < strlen( equation ); count++ ){
+  int count;
+  for( count = 0; count < strlen( equation ); count++ ){
     if( equation[count] != '\040' ){
       if( equation[count] == '(' ){
         closures_counter++;
@@ -64,9 +66,10 @@ char * classify_equation ( char * equation , char * classification, int position
     char * separated_parentesis = separate_parent_parentesis( equation ); 
     classify_equation( separated_parentesis, classification, position + indexOf( equation, separated_parentesis ), index );
   } 
-    
+  
+  int i;
   // find multi/division
-  for(int i = 0; i < strlen(equation); i++){	
+  for( i = 0; i < strlen(equation); i++){	
     if( classification[ i + position] == '\040' ){
       if(equation[i] == '*'|| equation[i] == '/'){
 	      *index = *index + 1;
@@ -76,7 +79,7 @@ char * classify_equation ( char * equation , char * classification, int position
   }
 
   // find add/sub
-  for(int i = 0; i < strlen(equation) ; i++){	
+  for( i = 0; i < strlen(equation) ; i++){	
     if( classification[i + position] == '\040' ){
       if(equation[i] == '-'|| equation[i] == '+'){
         *index = *index + 1;
@@ -89,17 +92,17 @@ char * classify_equation ( char * equation , char * classification, int position
 
 
 
-int main(){
+int classify(){
   int index = 0;
-
+  int i;
   char * equation;
 
-  printf("Digite uma expreção matemática válida:\n");
+  printf("Digite uma expressao matematica valida:\n");
   scanf("%m[^\n]", &equation);
 
   char * classification = (char *) malloc( strlen( equation ) * sizeof("a") );
 
-  for(int i = 0; i < strlen( equation ) * sizeof("a") ; i++){	
+  for( i = 0; i < strlen( equation ) * sizeof("a") ; i++){	
       classification[i] = '\040';
   }
 

@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -57,7 +56,7 @@ void display_stack(struct node *head) {
     }
     else
     {
-        printf("essa porra ta vazia\n");
+        printf("pilha vazia\n");
     }
 }
 

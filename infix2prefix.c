@@ -5,11 +5,11 @@
 #include <stdbool.h>
 #define flag '#'
 
-bool is_operator(char c) {
+bool is_an_operator(char c) {
     return (c=='+' || c=='-' || c=='*' || c=='/' || c=='^' || c=='$');
 }
 
-int main(){
+int infix_to_prefix(){
 
     struct node *head = NULL;
 
@@ -17,11 +17,11 @@ int main(){
     
     char postfix[] = "44+";
 
-	int j=0;
+	int i, j=0;
     
     init_stack( head );
 
-	for(int i = strlen(postfix) - 1 ; i>=0 ; i-- ) {
+	for( i = strlen(postfix) - 1 ; i>=0 ; i-- ) {
 		if(is_operator(postfix[i]))
             head = push_in_stack( head, postfix[i] );
         else {

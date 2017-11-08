@@ -27,14 +27,14 @@ int priority(char ch){
     return -1;
 }
 
-int main(){
+int infix_to_posfix(){
     struct node *head = NULL;
 
-    char exp[20];
+    char exp[64];
     int k, i;
     char x;
-    printf("Entre com a expressão:");
-    fgets (exp, 20, stdin);
+    printf("Entre com a expressao:");
+    fgets (exp, 64, stdin);
 
     init_stack(head);
 
@@ -53,7 +53,7 @@ int main(){
                 exp[++k] = x; 
             }
             if ( is_stack_empty(head) == 0 && get_value(head) != '(') {
-                printf("Expressão inválida!");
+                printf("Expressao invalida!");
                 return -1;          
             } else {
                 head = pop_stack(head, &x);
