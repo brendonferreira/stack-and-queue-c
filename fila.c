@@ -81,7 +81,6 @@ void le_arquivo(Nodo **fila)
 
     fgets(string, 1280, arq);
 
-
     for (
         id_pointer = strtok(string, ","),
         prioridade_pointer = strtok( NULL, ";" )

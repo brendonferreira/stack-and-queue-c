@@ -28,16 +28,17 @@ char solve_expression(char value_a, char value_b, char operation) {
     return '0';
 }
 
-int main() {
+int solve_posfix() {
 	struct node *head = NULL;
-	char exp[20];
+	int i;
+	char exp[50];
 	char n1, n2, n3;
-	printf("Entre com a expressão pós fixa:");
+	printf("Entre com a expressao pos fixa:");
 	scanf("%s", exp);
 
 	init_stack(head);
 
-	for (int i = 0; exp[i] != '\0' ; ++i) {
+	for ( i = 0; exp[i] != '\0' ; ++i) {
 	
 		if (isdigit(exp[i])){
 			head = push_in_stack( head, exp[i] );
@@ -49,7 +50,7 @@ int main() {
 		} 
 	}
 
-	printf("\nThe result of expression %s  =  %c\n\n", exp, head->data);
+	printf("\nResultado da expressao %s  =  %c\n\n", exp, head->data);
 	
 	return 0;
 }
