@@ -27,7 +27,7 @@ int priority(char ch){
     return -1;
 }
 
-int infix_to_posfix(){
+int main(){
     struct node *head = NULL;
 
     char exp[64];

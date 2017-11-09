@@ -216,7 +216,7 @@ void distribuir_para_filas(Nodo **queue_entrada, Nodo **queue1, Nodo **queue2, N
             }
         }
 
-        remove_final_lista(queue_entrada);
+        remove_inicio_lista(queue_entrada);
 
         // imprime_filas( queue_entrada, queue1, queue2, queue3 );
         

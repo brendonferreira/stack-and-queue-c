@@ -148,7 +148,8 @@ char * posfix_to_prefix( char postfix[] ){
 
     struct node *head = NULL;
 
-    char prefix[30], nada;
+	char * prefix = malloc (sizeof (char) * 30);
+	char nada;
  
 	int i, j=0;
     
@@ -170,10 +171,7 @@ char * posfix_to_prefix( char postfix[] ){
 		
 		}
 	}
-	// prefix[j] = 0;
-	// reverse(prefix, prefix + len);
-    // cout<<"The prefix expression is: "<<prefix;
-    
+
     return prefix;
 }
 
@@ -343,10 +341,9 @@ int main() {
 	char expression[64];
 	do{
 		printf("\n1.Infixa para Posfixa \n");
-		printf("\n2.Infixa para Prefixa \n");
-		printf("\n3.Validar Posfixa \n");
-		printf("\n4.Resolve Posfixa \n");
-		printf("\n5.Sair \n");
+		printf("\n2.Posfixa para Prefixa \n");
+		printf("\n3.Resolve Posfixa \n");
+		printf("\n4.Sair \n");
 		scanf("%d%*c", &menu);
 		switch( menu ){
 			case 1:
@@ -359,16 +356,13 @@ int main() {
 				printf("Digite uma expressão:");
 				fgets( expression, 64, stdin );
 				strcpy( expression, infix_to_posfix(expression) );
-				// strcpy( expression, posfix_to_prefix(expression) );
-				printf( "%s", expression );
+				char sp[64];
+				strcpy( sp, posfix_to_prefix(expression) );
 				break;
 			case 3:
-				classify();
-				break;
-			case 4:
 				solve_posfix();
 				break;
-			case 5:
+			case 4:
 				printf("\n\nSaindo\n\n");
 				exit(0);
 			default:

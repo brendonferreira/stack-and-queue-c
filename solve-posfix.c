@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "linkedstack.h"
+#include <math.h>
 
 char solve_expression(char value_a, char value_b, char operation) {
 
@@ -28,7 +29,7 @@ char solve_expression(char value_a, char value_b, char operation) {
     return '0';
 }
 
-int solve_posfix() {
+int main() {
 	struct node *head = NULL;
 	int i;
 	char exp[50];
@@ -50,7 +51,7 @@ int solve_posfix() {
 		} 
 	}
 
-	printf("\nResultado da expressao %s  =  %c\n\n", exp, head->data);
+	printf("\nResultado da expressao %s  =  %d\n\n", exp, head->data - '0');
 	
 	return 0;
 }
